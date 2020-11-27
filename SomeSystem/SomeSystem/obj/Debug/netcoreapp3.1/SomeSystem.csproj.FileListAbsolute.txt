@@ -11,3 +11,16 @@ C:\Users\oleko\Desktop\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.
 C:\Users\oleko\Desktop\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.dll
 C:\Users\oleko\Desktop\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.pdb
 C:\Users\oleko\Desktop\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.genruntimeconfig.cache
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.exe
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.deps.json
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.runtimeconfig.json
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.runtimeconfig.dev.json
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.dll
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\bin\Debug\netcoreapp3.1\SomeSystem.pdb
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.csprojAssemblyReference.cache
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.AssemblyInfoInputs.cache
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.AssemblyInfo.cs
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.csproj.CoreCompileInputs.cache
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.dll
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.pdb
+C:\Users\Oleg_Olegovich\Desktop\ProjectsFromSeminars\SomeSystem\SomeSystem\obj\Debug\netcoreapp3.1\SomeSystem.genruntimeconfig.cache

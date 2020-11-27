@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\oleko\\Desktop\\SomeSystem\\SomeSystem\\SomeSystem.csproj": {}
+    "C:\\Users\\Oleg_Olegovich\\Desktop\\ProjectsFromSeminars\\SomeSystem\\SomeSystem\\SomeSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\oleko\\Desktop\\SomeSystem\\SomeSystem\\SomeSystem.csproj": {
+    "C:\\Users\\Oleg_Olegovich\\Desktop\\ProjectsFromSeminars\\SomeSystem\\SomeSystem\\SomeSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\oleko\\Desktop\\SomeSystem\\SomeSystem\\SomeSystem.csproj",
+        "projectUniqueName": "C:\\Users\\Oleg_Olegovich\\Desktop\\ProjectsFromSeminars\\SomeSystem\\SomeSystem\\SomeSystem.csproj",
         "projectName": "SomeSystem",
-        "projectPath": "C:\\Users\\oleko\\Desktop\\SomeSystem\\SomeSystem\\SomeSystem.csproj",
-        "packagesPath": "C:\\Users\\oleko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\oleko\\Desktop\\SomeSystem\\SomeSystem\\obj\\",
+        "projectPath": "C:\\Users\\Oleg_Olegovich\\Desktop\\ProjectsFromSeminars\\SomeSystem\\SomeSystem\\SomeSystem.csproj",
+        "packagesPath": "C:\\Users\\Oleg_Olegovich\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Oleg_Olegovich\\Desktop\\ProjectsFromSeminars\\SomeSystem\\SomeSystem\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\oleko\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Oleg_Olegovich\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
