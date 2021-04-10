@@ -16,16 +16,32 @@ namespace semLinqTask
                           .Count()
                           .ToString();
 
+        // Query syntax.
+        static string NumberOfDistinctCitiesQuerySyntax(List<WeatherEvent> wetherEvent)
+            => (from e in wetherEvent select e.City).Distinct().Count().ToString();
+
         static string EachYearDataCount(List<WeatherEvent> wetherEvent)
         {
-            int[] years = wetherEvent.Select(e => e.StartTime).Select(e => e.Year).Distinct().ToArray();
+            int[] years = wetherEvent.Select(e => e.StartTime.Year).Distinct().ToArray();
             var lines = new List<string>();
             years.ToList().ForEach(year => lines.Add(year.ToString()));
             return string.Join(Environment.NewLine, lines);
         }
 
+        // Query syntax.
+        static string EachYearStatsQuerySyntax(List<WeatherEvent> wetherEvent)
+        {
+            var lines = (from e in wetherEvent
+                         group e by e.StartTime.Year
+                         into g
+                         select $"{g.Key}: {g.Count()}");
+            return string.Join(Environment.NewLine, lines);
+        }
+
         static string NumbersOfEventsIn(int year, List<WeatherEvent> wetherEvent)
-            => wetherEvent.Where(e => e.StartTime.Year == year).Count().ToString();
+            => wetherEvent.Where(e => e.StartTime.Year == year)
+                          .Count()
+                          .ToString();
 
         static string NumbersOfDistinctState(List<WeatherEvent> wetherEvent)
             => wetherEvent.Select(e => e.State)
@@ -34,27 +50,63 @@ namespace semLinqTask
                           .Count()
                           .ToString();
 
+        // Query syntax.
+        static int NumberOfDistinctStatesQuerySyntax(List<WeatherEvent> wetherEvent)
+            => (from e in wetherEvent select e.State).Distinct().Count();
+
         static Dictionary<string, int> DictionaryOfRainingCitiesIn(int year, List<WeatherEvent> wetherEvent)
         {
             var result = new Dictionary<string, int>();
-            wetherEvent.Where(e => e.StartTime.Year == year).Where(e => e.Type == WeatherEventType.Rain)
+            wetherEvent.Where(e => e.StartTime.Year == year && e.Type == WeatherEventType.Rain)
                        .Select(e => e.City)
                        .GroupBy(e => e)
                        .Where(e => e.Count() > 1)
                        .Select(y => new { Elements = y.Key, Counter = y.Count() })
-                       .ToList().ForEach(city => result.Add(city.Elements, city.Counter));
+                       .ToList()
+                       .ForEach(city => result.Add(city.Elements, city.Counter));
+            return result;
+        }
+
+        // Query syntax.
+        static Dictionary<string, int> DictionaryOfRainingCitiesInQuerySyntax(int year, List<WeatherEvent> wetherEvent)
+        {
+            var cities = (from e in wetherEvent
+                          where e.StartTime.Year == year && e.Type == WeatherEventType.Rain
+                          group e by e.City into g
+                          orderby g.Count() descending
+                          select $"{g.Key},{g.Count()}");
+            var result = new Dictionary<string, int>();
+            foreach (var city in cities)
+            {
+                var c = city.Split(',');
+                result.Add(c[0], int.Parse(c[1]));
+            }
             return result;
         }
 
         static string LongestSnowEventIn(int year, List<WeatherEvent> wetherEvent)
         {
-            WeatherEvent maxSpancity = wetherEvent.Where(e => e.StartTime.Year == year)
-                                                  .Where(e => e.Type == WeatherEventType.Snow)
+            WeatherEvent maxSpancity = wetherEvent.Where(e => e.StartTime.Year == year && e.Type == WeatherEventType.Snow)
                                                   .OrderByDescending(e => e.EndTime - e.StartTime)
-                                                  .ToList()[0];
+                                                  .First();
             var snowTimeSpanDay = (maxSpancity.EndTime - maxSpancity.StartTime).ToString("%d");
             var snowTimeSpanPrecise = (maxSpancity.EndTime - maxSpancity.StartTime).ToString(@"hh\:mm\:ss");
             return $"{maxSpancity.City} and was continued {snowTimeSpanDay} day(s) {snowTimeSpanPrecise}";
+        }
+
+        // Query syntax.
+        static string LongestSnowEventInQuerySyntax(int year, List<WeatherEvent> wetherEvent)
+        {
+            var lines = (from x in (from e in wetherEvent
+                                    where e.Type == WeatherEventType.Snow
+                                    group e by e.StartTime.Year into n
+                                    select new
+                                    {
+                                        Key = n.Key,
+                                        Value = n.OrderByDescending(x => (x.EndTime - x.StartTime).TotalMinutes).First()
+                                    })
+                         select $"{x.Key}: {x.Value.City} {x.Value.StartTime}-{x.Value.EndTime}");
+            return string.Join(Environment.NewLine, lines);
         }
 
         static void Main(string[] args)
