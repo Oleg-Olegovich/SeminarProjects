@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
 
 namespace semLinqTask
@@ -12,10 +11,10 @@ namespace semLinqTask
 
         static string NumbersOfDistinctCities(List<WeatherEvent> wetherEvent)
             => wetherEvent.Select(e => e.City)
-                 .ToList()
-                 .Distinct()
-                 .Count()
-                 .ToString();
+                          .ToList()
+                          .Distinct()
+                          .Count()
+                          .ToString();
 
         static string EachYearDataCount(List<WeatherEvent> wetherEvent)
         {
