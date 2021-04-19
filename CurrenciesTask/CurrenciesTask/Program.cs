@@ -23,17 +23,34 @@ namespace CurrenciesTask
             }
         }
 
-        static async Task CreateTable()
+        static async Task Query(string query)
         {
             using var db = new NpgsqlConnection(ConnectionString);
-            var query = 
+            await db.QueryAsync(new CommandDefinition(query));
+        }
+
+        static async Task CreateSchema()
+            => await Query("CREATE SCHEMA IF NOT EXISTS crm;");
+
+        static async Task CreateTable()
+        {
+            await CreateSchema();
+            await DropTable();
+            var query =
                 @"CREATE TABLE IF NOT EXISTS crm.rates(
-                   id INT PRIMARY KEY     NOT NULL,
+                   id          SERIAL,
                    eur         DECIMAL    NOT NULL,
                    usd         DECIMAL    NOT NULL,
                    jpy         DECIMAL    NOT NULL,
-                   date        DATE       NOT NULL
+                   date        TEXT       NOT NULL
                 );";
+            await Query(query);
+        }
+
+        static async Task DropTable()
+        {
+            using var db = new NpgsqlConnection(ConnectionString);
+            var query = "DROP TABLE IF EXISTS crm.rates;";
             await db.QueryAsync(new CommandDefinition(query));
         }
 
@@ -70,16 +87,12 @@ namespace CurrenciesTask
 
         static async Task Write(Currency currency)
         {
-            await using var dbConnection = new NpgsqlConnection(ConnectionString);
-            await dbConnection.QueryAsync($"insert into crm.rates (id,eur,usd,jpy,date) values (@id,@eur,@usd,@jpy,@date);",
-                new 
-                { 
-                    id = currency.Id, 
-                    eur = currency.Euro, 
-                    usd = currency.Dollar, 
-                    jpy = currency.Yen, 
-                    date = currency.Date 
-                });
+            var eur = currency.Euro;
+            var usd = currency.Dollar;
+            var jpy = currency.Yen;
+            var date = currency.Date;
+            var query = $"insert into crm.rates (eur,usd,jpy,date) values ({eur},{usd},{jpy},{date});";
+            await Query(query);
         }
     }
 
