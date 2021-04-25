@@ -15,27 +15,25 @@ namespace CurrenciesTask
 
         static async Task Main(string[] args)
         {
-            await CreateTable();
+            using var db = new NpgsqlConnection(ConnectionString);
+            await CreateTable(db);
             foreach (var currency in await GetCurrenciesExchangeRate())
             {
                 Console.WriteLine(currency);
-                await Write(currency);
+                await Write(db, currency);
             }
         }
 
-        static async Task Query(string query)
-        {
-            using var db = new NpgsqlConnection(ConnectionString);
-            await db.QueryAsync(new CommandDefinition(query));
-        }
+        static async Task Query(NpgsqlConnection db, string query)
+            => await db.QueryAsync(new CommandDefinition(query));
 
-        static async Task CreateSchema()
-            => await Query("CREATE SCHEMA IF NOT EXISTS crm;");
+        static async Task CreateSchema(NpgsqlConnection db)
+            => await Query(db, "CREATE SCHEMA IF NOT EXISTS crm;");
 
-        static async Task CreateTable()
+        static async Task CreateTable(NpgsqlConnection db)
         {
-            await CreateSchema();
-            await DropTable();
+            await CreateSchema(db);
+            await DropTable(db);
             var query =
                 @"CREATE TABLE IF NOT EXISTS crm.rates(
                    id          SERIAL,
@@ -44,20 +42,17 @@ namespace CurrenciesTask
                    jpy         DECIMAL    NOT NULL,
                    date        TEXT       NOT NULL
                 );";
-            await Query(query);
+            await Query(db, query);
         }
 
-        static async Task DropTable()
-        {
-            using var db = new NpgsqlConnection(ConnectionString);
-            var query = "DROP TABLE IF EXISTS crm.rates;";
-            await db.QueryAsync(new CommandDefinition(query));
-        }
+        static async Task DropTable(NpgsqlConnection db)
+            => await Query(db, "DROP TABLE IF EXISTS crm.rates;");
 
-        static async Task<Currency> GetCurrenciesExchangeRate(string date, int id)
+        static async Task<Currency> GetCurrenciesExchangeRate(DateTime date, int id)
         {
+            var queryDate = date.Year + "-" + date.Month + "-" + date.Day;
             var client = new RestClient("https://api.ratesapi.io/api/");
-            var request = new RestRequest(date + "?base=RUB", DataFormat.Json);
+            var request = new RestRequest(queryDate + "?base=RUB", DataFormat.Json);
             var response = client.Get(request);
             var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Content);
             var currencies = JsonConvert.DeserializeObject<Dictionary<string, object>>(data["rates"].ToString());
@@ -79,20 +74,19 @@ namespace CurrenciesTask
             var result = new List<Currency>();
             for (var date = new DateTime(2020, 1, 1); date < today; date = date.AddDays(1))
             {
-                var queryDate = date.Year + "-" + date.Month + "-" + date.Day;
-                result.Add(await GetCurrenciesExchangeRate(queryDate, id++));
+                result.Add(await GetCurrenciesExchangeRate(date, id++));
             }
             return result;
         }
 
-        static async Task Write(Currency currency)
+        static async Task Write(NpgsqlConnection db, Currency currency)
         {
-            var eur = currency.Euro;
+            var euro = currency.Euro;
             var usd = currency.Dollar;
-            var jpy = currency.Yen;
+            var yen = currency.Yen;
             var date = currency.Date;
-            var query = $"insert into crm.rates (eur,usd,jpy,date) values ({eur},{usd},{jpy},{date});";
-            await Query(query);
+            await db.QueryAsync($"insert into crm.rates (eur,usd,jpy,date) values (@eur,@usd,@jpy,@date);",
+                new { eur = euro, usd = usd, jpy = yen, date = date });
         }
     }
 
@@ -106,7 +100,7 @@ namespace CurrenciesTask
 
         public int Id { get; set; }
 
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         public override string ToString()
         {
